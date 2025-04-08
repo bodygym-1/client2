@@ -1688,6 +1688,72 @@
         .file-input-label:hover {
             background: #444;
         }
+
+        /* Connected Clients Section */
+        .connected-clients-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #000000;
+            border-radius: 15px;
+            border: 2px solid #FF0000;
+        }
+
+        .connected-clients-title {
+            color: #FFD700;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+        }
+
+        .clients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 15px;
+            padding: 10px;
+        }
+
+        .client-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid #FF0000;
+            overflow: hidden;
+            margin: 0 auto;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .client-avatar:hover {
+            transform: scale(1.1);
+        }
+
+        .client-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .client-status {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #2ecc71;
+            border: 2px solid #000000;
+        }
+
+        .client-name {
+            color: #FFD700;
+            text-align: center;
+            font-size: 0.9em;
+            margin-top: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     </style>
 </head>
 <body>
@@ -1831,6 +1897,14 @@
                                     <p id="daysRemaining"></p>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Connected Clients Section -->
+                    <div class="connected-clients-section">
+                        <h3 class="connected-clients-title">Clients Connectés</h3>
+                        <div class="clients-grid" id="connectedClientsGrid">
+                            <!-- Les avatars des clients seront ajoutés ici dynamiquement -->
                         </div>
                     </div>
                 </div>
@@ -2273,6 +2347,9 @@
                     document.getElementById('mainContent').style.display = 'block';
                     window.showPage('profile');
                     checkUnreadMessages();
+                    
+                    // Charger l'image de profil
+                    loadProfileImage();
                 } else {
                     alert("Identifiants invalides");
                 }
@@ -2699,10 +2776,39 @@
 
         // Fonction pour mettre à jour le compteur de clients connectés
         function updateConnectedClientsCount() {
-            const connectedClientsRef = ref(db, 'connectedClients/count');
+            const connectedClientsRef = ref(db, 'connectedClients');
             onValue(connectedClientsRef, (snapshot) => {
-                const count = snapshot.val() || 0;
+                const connectedClients = snapshot.val() || {};
+                const count = Object.keys(connectedClients).length;
                 document.getElementById('connectedClientsCount').textContent = count;
+                
+                // Mettre à jour la grille des clients connectés
+                updateConnectedClientsGrid(connectedClients);
+            });
+        }
+
+        // Fonction pour mettre à jour la grille des clients connectés
+        function updateConnectedClientsGrid(connectedClients) {
+            const grid = document.getElementById('connectedClientsGrid');
+            grid.innerHTML = ''; // Vider la grille
+
+            Object.entries(connectedClients).forEach(([clientId, clientData]) => {
+                const clientDiv = document.createElement('div');
+                clientDiv.className = 'client-avatar-container';
+                
+                // Récupérer l'image de profil sauvegardée ou utiliser l'image par défaut
+                const savedImage = localStorage.getItem('profileImage_' + clientId);
+                const imageUrl = savedImage || 'https://img.icons8.com/bubbles/100/000000/user.png';
+                
+                clientDiv.innerHTML = `
+                    <div class="client-avatar">
+                        <img src="${imageUrl}" alt="${clientData.name || 'Client'}">
+                        <div class="client-status"></div>
+                    </div>
+                    <div class="client-name">${clientData.name || 'Client'}</div>
+                `;
+                
+                grid.appendChild(clientDiv);
             });
         }
 
@@ -2741,16 +2847,28 @@
                 const reader = new FileReader();
                 
                 reader.onload = function(e) {
-                    profileImg.src = e.target.result;
+                    const imageData = e.target.result;
+                    profileImg.src = imageData;
                     
                     // Sauvegarder l'image dans le localStorage
-                    localStorage.setItem('profileImage_' + window.currentClient.key, e.target.result);
-                    
-                    // Fermer la modal
-                    closePhotoModal();
-                    
-                    // Afficher un message de succès
-                    showToast('Photo de profil mise à jour avec succès', 'success');
+                    if (window.currentClient && window.currentClient.key) {
+                        localStorage.setItem('profileImage_' + window.currentClient.key, imageData);
+                        
+                        // Mettre à jour l'image dans la base de données Firebase
+                        const clientRef = ref(db, 'clients/' + window.currentClient.key);
+                        update(clientRef, {
+                            profileImage: imageData
+                        }).then(() => {
+                            // Fermer la modal
+                            closePhotoModal();
+                            
+                            // Afficher un message de succès
+                            showToast('Photo de profil mise à jour avec succès', 'success');
+                        }).catch((error) => {
+                            console.error("Erreur lors de la mise à jour de l'image:", error);
+                            showToast('Erreur lors de la mise à jour de l\'image', 'error');
+                        });
+                    }
                 };
                 
                 reader.readAsDataURL(fileInput.files[0]);
@@ -2759,24 +2877,30 @@
             }
         };
         
-        // Charger l'image de profil enregistrée au chargement de la page
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if the user is logged in
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    // Your existing code for logged in users
-                    // ...
-                    
-                    // Load the saved profile image if available
-                    if (window.currentClient && window.currentClient.key) {
-                        const savedImage = localStorage.getItem('profileImage_' + window.currentClient.key);
-                        if (savedImage) {
-                            document.getElementById('profileImage').src = savedImage;
+        // Charger l'image de profil au chargement de la page
+        function loadProfileImage() {
+            if (window.currentClient && window.currentClient.key) {
+                const clientRef = ref(db, 'clients/' + window.currentClient.key);
+                get(clientRef).then((snapshot) => {
+                    if (snapshot.exists()) {
+                        const clientData = snapshot.val();
+                        const profileImg = document.getElementById('profileImage');
+                        
+                        // Essayer d'abord de charger l'image depuis Firebase
+                        if (clientData.profileImage) {
+                            profileImg.src = clientData.profileImage;
+                        } 
+                        // Sinon, essayer de charger depuis le localStorage
+                        else {
+                            const savedImage = localStorage.getItem('profileImage_' + window.currentClient.key);
+                            if (savedImage) {
+                                profileImg.src = savedImage;
+                            }
                         }
                     }
-                }
-            });
-        });
+                });
+            }
+        }
     </script>
 </body>
 </html>
