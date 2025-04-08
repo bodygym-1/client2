@@ -290,19 +290,124 @@
 
         /* Calendar */
         #calendar {
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 14px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #FF0000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+        }
+
+        #calendar th,
+        #calendar td {
+            border: 1px solid #FF0000;
+            padding: 15px;
+            text-align: center;
+            word-wrap: break-word;
+            min-width: 100px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #FFD700;
+            transition: all 0.3s ease;
         }
 
         #calendar th {
-            background: var(--primary-red);
-            color: var(--light-text);
+            background: linear-gradient(135deg, #FF0000, #cc0000);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
         }
 
-        #calendar td {
-            background: var(--surface-color);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
+        #calendar td:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+        }
+
+        #calendar .time-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        #calendar .time-display:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        #calendar .time-icon {
+            font-size: 1.2em;
+            color: #FFD700;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+
+        #calendar .time-text {
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        /* Status Indicators */
+        .status-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            border: 2px solid #FF0000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .status-item i {
+            font-size: 1.3em;
+        }
+
+        .status-open {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+            border: 2px solid #2ecc71;
+            text-shadow: 0 0 5px rgba(46, 204, 113, 0.5);
+        }
+
+        .status-open i {
+            color: #2ecc71;
+            text-shadow: 0 0 10px rgba(46, 204, 113, 0.7);
+        }
+
+        .status-closed {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            border: 2px solid #e74c3c;
+            text-shadow: 0 0 5px rgba(231, 76, 60, 0.5);
+        }
+
+        .status-closed i {
+            color: #e74c3c;
+            text-shadow: 0 0 10px rgba(231, 76, 60, 0.7);
+        }
+
+        .status-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
         /* Footer */
@@ -316,20 +421,6 @@
         .toast {
             background: var(--surface-color);
             color: var(--text-color);
-        }
-
-        /* Status Indicators */
-        .status-indicator {
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-        }
-
-        .status-open {
-            color: var(--primary-gold);
-        }
-
-        .status-closed {
-            color: var(--accent-red);
         }
 
         /* Scrollbar Styling */
@@ -567,10 +658,12 @@
             max-width: 900px;
             margin: 0 auto;
             padding: 20px;
-            background: white;
+            background: rgba(0, 0, 0, 0.95);
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.2);
             overflow-x: auto;
+            border: 1px solid #FF0000;
+            color: #FFD700;
         }
 
         /* Style pour le conteneur de l'heure */
@@ -1062,10 +1155,18 @@
                 left: -100%;
                 width: 100%;
                 height: calc(100vh - 70px);
-                background: white;
+                background: rgba(0, 0, 0, 0.95);
                 flex-direction: column;
                 padding: 2rem;
                 transition: 0.3s;
+                border-right: 1px solid #FF0000;
+                box-shadow: 0 5px 15px rgba(255, 0, 0, 0.2);
+            }
+
+            .nav-links a {
+                color: #FFD700;
+                border: 1px solid rgba(255, 0, 0, 0.2);
+                width: 100%;
             }
 
             .nav-links.active {
@@ -1074,6 +1175,11 @@
 
             .navbar {
                 padding: 1rem;
+            }
+            
+            .menu-toggle span {
+                background: #FFD700;
+                box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
             }
         }
 
@@ -1852,7 +1958,7 @@
                         </div>
                         <div class="profile-info">
                             <h2 class="profile-name" id="clientName"></h2>
-                            <span class="membership-badge" data-i18n="profile_active_member">Membre Actif</span>
+                            <span class="membership-badge" id="connectedClientsCount">0 Clients Connectés</span>
                         </div>
                     </div>
 
@@ -1860,11 +1966,11 @@
                         <div class="info-grid">
                             <div class="info-box">
                                 <div class="info-icon">
-                                    <i class="fas fa-users"></i>
+                                    <i class="fas fa-door-open"></i>
                                 </div>
                                 <div class="info-content">
-                                    <h3 data-i18n="connected_clients">Clients Connectés</h3>
-                                    <p id="connectedClientsCount">0</p>
+                                    <h3 data-i18n="gym_status">Statut de la Salle</h3>
+                                    <p id="gymStatus">Chargement...</p>
                                 </div>
                             </div>
 
@@ -1873,8 +1979,8 @@
                                     <i class="fas fa-calendar"></i>
                                 </div>
                                 <div class="info-content">
-                                    <h3 data-i18n="profile_payment_due">Prochain Paiement</h3>
-                                    <p id="nextPaymentDueDate"></p>
+                                    <h3 data-i18n="next_payment">Prochain Paiement</h3>
+                                    <p id="nextPaymentDate">Chargement...</p>
                                 </div>
                             </div>
 
@@ -1901,12 +2007,7 @@
                     </div>
 
                     <!-- Connected Clients Section -->
-                    <div class="connected-clients-section">
-                        <h3 class="connected-clients-title">Clients Connectés</h3>
-                        <div class="clients-grid" id="connectedClientsGrid">
-                            <!-- Les avatars des clients seront ajoutés ici dynamiquement -->
-                        </div>
-                    </div>
+                
                 </div>
             </div>
         </div>
@@ -2115,7 +2216,10 @@
                 loading_private_messages: "Chargement des messages privés...",
                 contact_title: "Contact",
                 nav_contact: "Contact",
-                connected_clients: "Clients Connectés"
+                connected_clients: "Clients Connectés",
+                gym_status: "Statut de la Salle",
+                opening_hours: "Horaires d'Ouverture",
+                next_payment: "Prochain Paiement",
             },
             en: {
                 title: "Client Area",
@@ -2165,7 +2269,10 @@
                 loading_private_messages: "Loading private messages...",
                 contact_title: "Contact",
                 nav_contact: "Contact",
-                connected_clients: "Connected Clients"
+                connected_clients: "Connected Clients",
+                gym_status: "Gym Status",
+                opening_hours: "Opening Hours",
+                next_payment: "Next Payment",
             },
             ar: {
                 title: "منطقة العميل",
@@ -2215,7 +2322,10 @@
                 loading_private_messages: "جاري تحميل الرسائل الخاصة...",
                 contact_title: "اتصل بنا",
                 nav_contact: "اتصل بنا",
-                connected_clients: "العملاء المتصلون"
+                connected_clients: "العملاء المتصلون",
+                gym_status: "حالة الصالة",
+                opening_hours: "ساعات العمل",
+                next_payment: "الدفعة القادمة",
             }
         };
 
@@ -2360,7 +2470,10 @@
         };
 
         function displayClientInfo(client) {
-            document.getElementById('clientName').textContent = `${client.firstName} ${client.lastName}`;
+            const clientNameElement = document.getElementById('clientName');
+            if (clientNameElement) {
+                clientNameElement.textContent = `${client.firstName} ${client.lastName}`;
+            }
 
             // Fetch the global tariff from the root level
             const dbRef = ref(db);
@@ -2368,14 +2481,20 @@
                 .then((snapshot) => {
                     const data = snapshot.val();
                     const globalTariff = data.globalTariff;
-                    document.getElementById('clientTariff').textContent = `${globalTariff} MAD`;
+                    const tariffElement = document.getElementById('clientTariff');
+                    if (tariffElement) {
+                        tariffElement.textContent = `${globalTariff} MAD`;
+                    }
                 })
                 .catch((error) => {
                     console.error("Error fetching tariff:", error);
-                    document.getElementById('clientTariff').textContent = "N/A";
+                    const tariffElement = document.getElementById('clientTariff');
+                    if (tariffElement) {
+                        tariffElement.textContent = "N/A";
+                    }
                 });
 
-            // Calculate and display next payment due date
+            // Calculate and display next payment date
             const payments = client.payments || [];
             const paymentFrequency = client.paymentFrequency || "monthly";
             let nextPaymentDueDate = null;
@@ -2395,13 +2514,75 @@
                 nextPaymentDueDate.setMonth(nextPaymentDueDate.getMonth() + 1);
             }
 
-            document.getElementById('nextPaymentDueDate').textContent = nextPaymentDueDate.toLocaleDateString();
+            // Afficher la date du prochain paiement
+            const nextPaymentElement = document.getElementById('nextPaymentDate');
+            if (nextPaymentElement) {
+                nextPaymentElement.textContent = nextPaymentDueDate.toLocaleDateString('fr-FR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+            }
 
             // Calculate and display days remaining
             const today = new Date();
             const timeDiff = nextPaymentDueDate - today;
             const daysRemaining = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-            document.getElementById('daysRemaining').textContent = daysRemaining > 0 ? daysRemaining : "0";
+            const daysRemainingElement = document.getElementById('daysRemaining');
+            if (daysRemainingElement) {
+                daysRemainingElement.textContent = daysRemaining > 0 ? daysRemaining : "0";
+            }
+
+            // Mettre à jour le statut de la salle
+            const openingHoursRef = ref(db, 'openingHours');
+            get(openingHoursRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const openingHours = snapshot.val();
+                    const now = new Date();
+                    const currentDay = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][now.getDay()];
+                    const currentTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+                    
+                    const dayData = openingHours[currentDay];
+                    const gymStatus = document.getElementById('gymStatus');
+                    
+                    if (dayData && !dayData.closed) {
+                        const openingTime = dayData.openingTime;
+                        const closingTime = dayData.closingTime;
+                        
+                        // Convertir les heures en minutes pour la comparaison
+                        const currentMinutes = parseInt(currentTime.split(':')[0]) * 60 + parseInt(currentTime.split(':')[1]);
+                        const openingMinutes = parseInt(openingTime.split(':')[0]) * 60 + parseInt(openingTime.split(':')[1]);
+                        const closingMinutes = parseInt(closingTime.split(':')[0]) * 60 + parseInt(closingTime.split(':')[1]);
+                        
+                        const isOpen = currentMinutes >= openingMinutes && currentMinutes <= closingMinutes;
+                        
+                        if (gymStatus) {
+                            gymStatus.innerHTML = `
+                                <span style="color: ${isOpen ? '#2ecc71' : '#e74c3c'}; font-weight: bold;">
+                                    ${isOpen ? 'Ouvert' : 'Fermé'}
+                                </span>
+                            `;
+                        }
+                    } else {
+                        if (gymStatus) {
+                            gymStatus.innerHTML = `
+                                <span style="color: #e74c3c; font-weight: bold;">Fermé</span>
+                            `;
+                        }
+                    }
+                }
+            });
+
+            // Mettre à jour le nombre de clients connectés
+            const connectedClientsRef = ref(db, 'connectedClients');
+            onValue(connectedClientsRef, (snapshot) => {
+                const connectedClients = snapshot.val() || {};
+                const count = Object.keys(connectedClients).length;
+                const countElement = document.getElementById('connectedClientsCount');
+                if (countElement) {
+                    countElement.textContent = `${count} Client${count > 1 ? 's' : ''} Connecté${count > 1 ? 's' : ''}`;
+                }
+            });
         }
 
         function displayOpeningHoursCalendar(openingHours) {
@@ -2451,6 +2632,12 @@
                     <div class="status-item ${isOpen ? 'status-open' : 'status-closed'}">
                         <i class="fas ${isOpen ? 'fa-door-open' : 'fa-door-closed'}"></i>
                         <span>${isOpen ? 'Ouvert' : 'Fermé'}</span>
+                        <span style="margin-right: 5px; font-size: 0.9em;">${isOpen ? 'مفتوح' : 'مغلق'}</span>
+                    </div>
+                    <div class="status-item ${isOpen ? 'status-open' : 'status-closed'}">
+                        <i class="fas fa-clock"></i>
+                        <span>Fermeture: ${closingTime}</span>
+                        <span style="margin-right: 5px; font-size: 0.9em;">الإغلاق: ${closingTime}</span>
                     </div>
                 `;
             } else {
@@ -2458,6 +2645,12 @@
                     <div class="status-item status-closed">
                         <i class="fas fa-door-closed"></i>
                         <span>Fermé</span>
+                        <span style="margin-right: 5px; font-size: 0.9em;">مغلق</span>
+                    </div>
+                    <div class="status-item status-closed">
+                        <i class="fas fa-clock"></i>
+                        <span>Fermé aujourd'hui</span>
+                        <span style="margin-right: 5px; font-size: 0.9em;">مغلق اليوم</span>
                     </div>
                 `;
             }
@@ -2780,7 +2973,10 @@
             onValue(connectedClientsRef, (snapshot) => {
                 const connectedClients = snapshot.val() || {};
                 const count = Object.keys(connectedClients).length;
-                document.getElementById('connectedClientsCount').textContent = count;
+                const countElement = document.getElementById('connectedClientsCount');
+                if (countElement) {
+                    countElement.textContent = count;
+                }
                 
                 // Mettre à jour la grille des clients connectés
                 updateConnectedClientsGrid(connectedClients);
@@ -2790,6 +2986,8 @@
         // Fonction pour mettre à jour la grille des clients connectés
         function updateConnectedClientsGrid(connectedClients) {
             const grid = document.getElementById('connectedClientsGrid');
+            if (!grid) return; // Sortir si l'élément n'existe pas
+
             grid.innerHTML = ''; // Vider la grille
 
             Object.entries(connectedClients).forEach(([clientId, clientData]) => {
