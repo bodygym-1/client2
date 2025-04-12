@@ -82,37 +82,22 @@
             box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
             max-width: 400px;
             margin: 0 auto;
-            transition: all 0.3s ease;
             border: 2px solid var(--primary-red);
             position: relative;
             overflow: visible;
         }
 
         #loginForm::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #000000 !important;
-            z-index: -1;
+            display: none;
         }
 
         #loginForm::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #000000 !important;
-            z-index: 1;
+            display: none;
         }
 
         #loginForm:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 40px rgba(255, 0, 0, 0.4);
+            transform: none;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
         }
 
         #loginForm label {
@@ -174,12 +159,12 @@
 
         #loginForm button:hover {
             background: linear-gradient(135deg, var(--accent-red), var(--primary-red));
-            transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+            transform: none;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
         }
 
         #loginForm button:active {
-            transform: translateY(1px);
+            transform: none;
         }
 
         .logo-container {
@@ -220,17 +205,137 @@
         }
 
         .login-logo:hover {
-            transform: scale(1.1);
+            transform: none;
         }
 
         /* Navigation */
         .navbar {
-            background: var(--surface-color);
-            border-bottom: 1px solid var(--border-color);
+            /* Hide navbar by default on larger screens */
+            display: none; 
+            background: rgba(0, 0, 0, 0.95);
+            padding: 1rem; /* Adjusted padding for mobile */
+            box-shadow: 0 2px 20px rgba(255, 0, 0, 0.2);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--primary-red);
+        }
+
+        /* Remove desktop-specific flex container styles */
+        /* .navbar-container { ... } */ 
+
+        /* Style nav links specifically for the mobile slide-out menu */
+        .nav-links {
+            position: fixed;
+            top: 0;
+            left: -100%; /* Hidden by default */
+            width: 250px; /* Slightly narrower menu */
+            height: 100vh;
+            background: rgba(10, 0, 0, 0.98); /* Darker, less transparent background */
+            flex-direction: column;
+            padding: 60px 1rem 1rem; /* Adjust padding for toggle button space */
+            transition: left 0.3s ease-in-out; /* Smoother transition */
+            border-right: 2px solid var(--primary-red);
+            box-shadow: 5px 0 15px rgba(255, 0, 0, 0.2);
+            z-index: 1000;
+            overflow-y: auto;
+            list-style: none; /* Ensure list style is none */
+            margin: 0; /* Ensure no margin */
+            gap: 0; /* Remove gap for column layout */
+            display: flex; /* Keep flex for column direction */
+        }
+
+        .nav-links.active {
+            left: 0; /* Show menu */
+        }
+
+        .nav-links li {
+            width: 100%; /* Make list items full width */
         }
 
         .nav-links a {
             color: var(--primary-gold);
+            text-decoration: none;
+            padding: 0.8rem 1.5rem; /* Maintain padding */
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: transparent; /* Remove default background */
+            margin: 5px 0; /* Vertical margin */
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+            width: 100%; /* Make links full width */
+            box-sizing: border-box; /* Include padding in width */
+            border-bottom: 1px solid rgba(255, 215, 0, 0.1); /* Subtle separator */
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 0, 0, 0.2);
+            /* transform: translateY(-2px); No vertical transform needed */
+            color: #ffffff;
+        }
+
+        .nav-links a.active {
+            background: var(--primary-red);
+            color: white;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+        }
+
+        /* Keep menu toggle hidden by default */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: fixed; /* Use fixed positioning */
+            top: 15px;    /* Adjust position */
+            left: 15px;   /* Adjust position */
+            z-index: 1001; /* Ensure it's above the menu */
+            padding: 5px;
+            background-color: rgba(0, 0, 0, 0.5); /* Slight background for visibility */
+            border-radius: 4px;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: var(--primary-gold); /* Use theme color */
+            margin: 5px 0;
+            transition: 0.3s;
+            border-radius: 1px; /* Slightly rounded bars */
+        }
+
+        /* Remove default main content margin */
+        #mainContent {
+             margin-top: 0; /* No margin by default */
+        }
+
+        /* Responsive Navbar for Mobile */
+        @media (max-width: 768px) {
+            .navbar {
+                display: flex; /* Show navbar on mobile */
+                justify-content: flex-end; /* Align items if needed, though toggle is fixed */
+                padding: 0.5rem 1rem; /* Adjust mobile padding */
+            }
+
+            .menu-toggle {
+                display: block; /* Show toggle button on mobile */
+            }
+
+            /* .nav-links remain controlled by .active class */
+
+            /* Adjust main content margin only on mobile */
+            #mainContent {
+                margin-top: 60px; /* Add margin back for mobile */
+            }
+        }
+
+        .nav-links a {
+            color: #FFD700;
             background: var(--hover-bg);
         }
 
@@ -488,29 +593,12 @@
         }
 
         .login-logo:hover {
-            transform: scale(1.1);
-        }
-
-        #loginForm::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #FF0000);
-            animation: neonBorder 3s linear infinite;
+            transform: none;
         }
 
         @keyframes neonBorder {
-            0% {
+            0%, 50%, 100% {
                 left: -100%;
-            }
-            50% {
-                left: 100%;
-            }
-            100% {
-                left: 100%;
             }
         }
 
@@ -597,7 +685,7 @@
 
         #loginForm button:hover {
             background: linear-gradient(135deg, #cc0000, #FF0000);
-            transform: translateY(-2px);
+            transform: none;
             box-shadow: 0 5px 20px rgba(255, 0, 0, 0.5);
         }
 
@@ -1064,122 +1152,6 @@
 
             .info-content p {
                 color: #ecf0f1;
-            }
-        }
-
-        /* Navbar Styles */
-        .navbar {
-            background: rgba(0, 0, 0, 0.95);
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 20px rgba(255, 0, 0, 0.2);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            border-bottom: 1px solid #FF0000;
-        }
-
-        .navbar-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: #FFD700;
-            text-decoration: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            background: rgba(255, 0, 0, 0.1);
-            margin: 5px 0;
-            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-        }
-
-        .nav-links a:hover {
-            background: rgba(255, 0, 0, 0.2);
-            transform: translateY(-2px);
-            color: #ffffff;
-        }
-
-        .nav-links a.active {
-            background: #FF0000;
-            color: white;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
-        }
-
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .menu-toggle span {
-            display: block;
-            width: 25px;
-            height: 3px;
-            background: #333;
-            margin: 5px 0;
-            transition: 0.3s;
-        }
-
-        /* Main Content Adjustment */
-        #mainContent {
-            margin-top: 80px;
-        }
-
-        /* Responsive Navbar */
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
-
-            .nav-links {
-                position: fixed;
-                top: 70px;
-                left: -100%;
-                width: 100%;
-                height: calc(100vh - 70px);
-                background: rgba(0, 0, 0, 0.95);
-                flex-direction: column;
-                padding: 2rem;
-                transition: 0.3s;
-                border-right: 1px solid #FF0000;
-                box-shadow: 0 5px 15px rgba(255, 0, 0, 0.2);
-            }
-
-            .nav-links a {
-                color: #FFD700;
-                border: 1px solid rgba(255, 0, 0, 0.2);
-                width: 100%;
-            }
-
-            .nav-links.active {
-                left: 0;
-            }
-
-            .navbar {
-                padding: 1rem;
-            }
-            
-            .menu-toggle span {
-                background: #FFD700;
-                box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
             }
         }
 
@@ -2475,27 +2447,30 @@
                 clientNameElement.textContent = `${client.firstName} ${client.lastName}`;
             }
 
-            // Fetch the global tariff from the root level
-            const dbRef = ref(db);
-            get(dbRef)
-                .then((snapshot) => {
-                    const data = snapshot.val();
-                    const globalTariff = data.globalTariff;
-                    const tariffElement = document.getElementById('clientTariff');
-                    if (tariffElement) {
-                        tariffElement.textContent = `${globalTariff} MAD`;
+            // Display client's specific tariff based on the last payment type
+            const payments = client.payments || []; // Get payment history
+            const tariffElement = document.getElementById('clientTariff'); // Get the HTML element to update
+
+            if (tariffElement) {
+                if (payments.length > 0) {
+                    // Get the most recent payment
+                    const lastPayment = payments[payments.length - 1];
+
+                    if (lastPayment.type === 'offer') {
+                        // Display offer name and TOTAL price if the last payment was part of an offer
+                        const totalPrice = lastPayment.totalOfferAmount || lastPayment.price; // Use totalOfferAmount or price
+                        tariffElement.textContent = `${lastPayment.offerName || 'Offre'} (${totalPrice} MAD)`;
+                    } else {
+                        // Display the amount for regular monthly payments
+                        tariffElement.textContent = `${lastPayment.amount} MAD`;
                     }
-                })
-                .catch((error) => {
-                    console.error("Error fetching tariff:", error);
-                    const tariffElement = document.getElementById('clientTariff');
-                    if (tariffElement) {
-                        tariffElement.textContent = "N/A";
-                    }
-                });
+                } else {
+                    // If no payment history exists
+                    tariffElement.textContent = "N/A";
+                }
+            }
 
             // Calculate and display next payment date
-            const payments = client.payments || [];
             const paymentFrequency = client.paymentFrequency || "monthly";
             let nextPaymentDueDate = null;
 
@@ -3102,3 +3077,4 @@
     </script>
 </body>
 </html>
+
